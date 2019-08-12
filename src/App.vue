@@ -1,28 +1,60 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Loading v-show="$root.$data.bLoading"></Loading>
+    <Header v-show="$root.$data.bNav"></Header>
+    <transition
+      enter-active-class = "animated bounceInLeft delay-1s"
+      leave-active-class = "animated bounceOutRight"
+    >
+
+      <keep-alive :exclude="['Detail']">
+        <router-view></router-view>
+      </keep-alive>
+
+    </transition>
+    <Footer v-show="$root.$data.bFoot"></Footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import Header from './components/Header'
+import Footer from './components/Footer'
+import Loading from './components/Loading'
+
+import Swipe from 'swipe';
+import $ from 'jquery';
 
 export default {
   name: 'app',
+  watch:{
+    $route:{
+      handler({path}){
+
+        if(/home|follow|column/.test(path)){
+          this.$root.$data.bNav=true;
+          this.$root.$data.bFoot=true;
+        }
+        if(/user/.test(path)){
+          this.$root.$data.bNav=false;
+          this.$root.$data.bFoot=true;
+        }
+        if(/login|reg|detail/.test(path)){
+          this.$root.$data.bNav=false;
+          this.$root.$data.bFoot=true;
+        }
+
+      },
+      immediate:true
+    }
+  },
   components: {
-    HelloWorld
-  }
+    Loading,Header,Footer
+  },
+  
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
