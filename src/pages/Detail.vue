@@ -16,9 +16,9 @@
       </span>
     </div>
     <div>
-      <div class="tm_div" v-for="(item,index) of list" :key="index">
+      <div class="tm_div" v-for="(item,index) of detail" :key="index">
         <div class="tm_pro">
-          <router-link :to='`/detail/${item._id}`'>
+          <router-link :to="`/detail/${item._id}`">
             <img :src="item.img" width="100%" />
           </router-link>
 
@@ -57,8 +57,9 @@
 </template>
 
 <style>
-.tm_div{}
- .tm_title_con {
+.tm_div {
+}
+.tm_title_con {
   float: left;
   width: 100%;
   height: 100%;
@@ -66,7 +67,7 @@
   bottom: 0px;
   left: 0px;
   z-index: 2;
-  height:78px;
+  height: 78px;
   margin-top: -122px;
   background: rgba(15, 15, 15, 0.55);
 }
@@ -118,7 +119,7 @@
 }
 #logo {
   flex: 1;
-  height:32px;
+  height: 32px;
   padding-top: 3px;
 }
 #title {
@@ -130,38 +131,43 @@
 #list {
   flex: 1;
   display: flex;
-  padding:3px 2px;
+  padding: 3px 2px;
   height: 40px;
-} 
+}
 </style>
 
 <script>
+import { mapGetters} from 'vuex';
 export default {
-  data() {
-    return {
-      list: [],
-      detail: {
-        le: ""
-      }
-    };
-  },
+  name:'Detail',
+  // data() {
+  //   return {
+  //     list: [],
+  //     detail: {
+  //       le: ""
+  //     }
+  //   };
+  // },
+  computed:mapGetters(['detail']),
   created() {
     let id = this.$route.params.id;
-    let liu = this.$route.query.liu;
-    let le = this.$route.query.le;
-    this.liu = liu;
-    this.le = le;
     let dataName = this.$route.query.dataName;
+    let liu = this.$route.query.liu;
+    // console.log(liu)
+    let le = this.$route.query.le;
+    this.le = le;
+    this.$store.dispatch({type:'UPDATA_DETAIL',payload:{liu:liu}})
+
   },
-  mounted() {
-    console.log(this.liu)
-    axios({
-      url: `/api${this.liu}`
-      // url:'/api/home?id=asdfsaf'
-    }).then(res => {
-      this.list = res.data.data;
-      // console.log(this.list[0]);
-    });
-  }
+  // mounted() {
+  //   console.log(this.liu)
+  //   axios({
+  //     url: `/api${this.liu}`
+  //     // url:'/api/home?id=asdfsaf'
+  //   }).then(res => {
+  //     this.list = res.data.data;
+  //     // console.log(this.list[0]);
+  //   });
+  // }
 };
 </script>

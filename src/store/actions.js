@@ -27,9 +27,11 @@ export default {
         commit("UPDATA_USER",res.data.data)
         
     },
-    'UPDATA_DETAIL': ({ commit, state }, {dataName,id}) =>  {
+    'UPDATA_DETAIL': ({ commit, state },{type,payload}) =>  {
+        // console.log(type,payload.liu )
         axios({
-            url:`/api/${dataName}/${id}`,
+            url:`/api${payload.liu}`,
+
            params:{_page:1,_limit:5}
         }).then(
             res=>commit("UPDATA_DETAIL",res.data.data)
